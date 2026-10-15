@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESENCIA · Perfumes Árabes & De Marca</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        body { background-color: #F4F7FC; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in { animation: fadeIn 0.2s ease-out; }
+        .animate-scale-up { animation: scaleUp 0.2s ease-out; }
+
+        .shadow-soft { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+        .shadow-deep { box-shadow: 0 20px 40px -12px rgba(0,0,0,0.25); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4A5B6E 0%, #2D3B4A 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3D4C5C 0%, #1F2A35 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 91, 110, 0.3);
+        }
+
+        .modal-overlay {
+            background-color: rgba(20, 30, 40, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .admin-table th {
+            font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.05em; color: #94a3b8;
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #4A5B6E, #2D3B4A);
+            color: #f1f5f9; border: 1px solid #4A5B6E;
+        }
+        .toast-error {
+            background: #7f1d1d; color: #fecaca; border: 1px solid #991b1b;
+        }
+        .toast-info {
+            background: #F4F7FC; color: #1e293b; border: 1px solid #cbd5e1;
+        }
+
+        .perfume-card {
+            transition: all 0.3s ease;
+            border-width: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        .perfume-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+        .perfume-card .color-quarter-circle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            border-radius: 0 0 0 100%;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+            transition: opacity 0.3s ease;
+        }
+        .perfume-card:hover .color-quarter-circle {
+            opacity: 0.4;
+        }
+        .perfume-card .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .booking-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+        .booking-input {
+            width: 100%;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 0.875rem;
+            color: #1e293b;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .booking-input:focus {
+            border-color: #4A5B6E;
+            box-shadow: 0 0 0 3px rgba(74, 91, 110, 0.1);
+        }
+        .booking-input.error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+        }
+        .booking-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+        .booking-btn-red {
+            background: #4A5B6E;
+            color: white;
+            font-weight: 800;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+        .booking-btn-red:hover {
+            background: #2D3B4A;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 91, 110, 0.3);
+        }
+        .booking-btn-volver {
+            background: white;
+            color: #1e293b;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid #cbd5e1;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .booking-btn-volver:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .error-message {
+            font-size: 0.7rem;
+            color: #ef4444;
+            font-weight: 600;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .error-message i {
+            font-size: 0.65rem;
+        }
+
+        .appt-detail-container {
+            background: white;
+            border: 2px solid #4A5B6E;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(74, 91, 110, 0.08);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .appt-detail-header {
+            text-align: center;
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #1e293b;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .appt-summary-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .appt-summary-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .appt-summary-time {
+            font-weight: 900;
+            font-size: 1rem;
+            color: #1e293b;
+        }
+        .appt-summary-service {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .appt-tags {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 16px;
+        }
+        .appt-tags span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+        .appt-vehicle-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .appt-vehicle-img {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            flex-shrink: 0;
+        }
+        .appt-vehicle-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .appt-vehicle-info h4 {
+            font-weight: 900;
+            font-size: 1rem;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .appt-vehicle-info p {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .appt-vehicle-tags {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+            font-size: 0.7rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .appt-detail-info {
+            margin-bottom: 16px;
+        }
+        .appt-detail-info-row {
+            display: flex;
+            align-items: baseline;
+            padding: 6px 0;
+            font-size: 0.85rem;
+        }
+        .appt-detail-info-row .lbl {
+            font-weight: 800;
+            color: #1e293b;
+            min-width: 110px;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.03em;
+        }
+        .appt-detail-info-row .val {
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .liquidation-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .liquidation-box .liq-title {
+            text-align: center;
+            font-weight: 900;
+            font-size: 0.9rem;
+            color: #166534;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+        .liquidation-box .liq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .liquidation-box label {
+            font-size: 0.65rem;
+            font-weight: 900;
+            color: #166534;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .liquidation-box input {
+            width: 100%;
+            background: white;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e293b;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .liquidation-box input:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+        }
+
+        .appt-actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+        .btn-action {
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-action:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn-action-guardar {
+            background: white;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-action-guardar:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+        .btn-action-terminada {
+            background: #22c55e;
+            color: white;
+        }
+        .btn-action-terminada:hover {
+            background: #16a34a;
+        }
+        .btn-action-inconveniente {
+            background: #f97316;
+            color: white;
+        }
+        .btn-action-inconveniente:hover {
+            background: #ea580c;
+        }
+        .btn-action-eliminar {
+            background: #ef4444;
+            color: white;
+            margin-left: auto;
+        }
+        .btn-action-eliminar:hover {
+            background: #dc2626;
+        }
+
+        @media (max-width: 640px) {
+            .liquidation-box .liq-grid { grid-template-columns: 1fr; }
+            .btn-action-eliminar { margin-left: 0; }
+            .appt-detail-info-row { flex-direction: column; gap: 2px; }
+            .appt-detail-info-row .lbl { min-width: auto; }
+        }
+
+        .text-accent { color: #4A5B6E; }
+        .bg-accent { background-color: #4A5B6E; }
+        .border-accent { border-color: #4A5B6E; }
+
+        /* Carrusel de imágenes - CORREGIDO */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            border-radius: 16px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-slide {
+            display: flex;
+            transition: transform 0.3s ease;
+            height: 100%;
+            width: 100%;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            flex-shrink: 0;
+            padding: 8px;
+            box-sizing: border-box;
+            display: block;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .carousel-btn:hover { background: white; transform: translateY(-50%) scale(1.1); }
+        .carousel-btn.prev { left: 10px; }
+        .carousel-btn.next { right: 10px; }
+
+        .star-rating { color: #f59e0b; }
+        .star-rating .empty { color: #d1d5db; }
+
+        .fragrance-badge {
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+    <div id="root"></div>
+
+    <script>
+        // ---------- DATOS Y CONSTANTES ----------
+        const INITIAL_PERFUMES = [
+            { 
+                id: 1, brand: 'LATTAFA', model: 'ASAD', type: 'Árabe', gender: 'Masculino', 
+                fragranceType: 'Amaderado', price: 890, discount: 10, rating: 4.8, reviews: 124,
+                description: 'Una fragancia intensa y masculina con notas de cuero, vainilla y ámbar. Perfecta para ocasiones nocturnas.',
+                notes: 'Cuero, Vainilla, Ámbar, Bergamota',
+                images: [
+                    'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80',
+                    'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600&q=80',
+                    'https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=600&q=80'
+                ],
+                color: '#4A5B6E'
+            },
+            { 
+                id: 2, brand: 'DIOR', model: 'SAUVAGE', type: 'De Marca', gender: 'Masculino', 
+                fragranceType: 'Amaderado', price: 2450, discount: 15, rating: 4.9, reviews: 342,
+                description: 'Un aroma fresco y salvaje con bergamota, pimienta y ambroxan. Icónico y versátil.',
+                notes: 'Bergamota, Pimienta, Ambroxan, Lavanda',
+                images: [
+                    'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600&q=80',
+                    'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80',
+                    'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&q=80'
+                ],
+                color: '#2D3B4A'
+            },
+            { 
+                id: 3, brand: 'CHANEL', model: 'BLEU DE CHANEL', type: 'De Marca', gender: 'Masculino', 
+                fragranceType: 'Amaderado', price: 2890, discount: 0, rating: 4.9, reviews: 567,
+                description: 'Elegancia atemporal con notas de limón, menta y jengibre. Un clásico moderno.',
+                notes: 'Limón, Menta, Jengibre, Cedro',
+                images: [
+                    'https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=600&q=80',
+                    'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600&q=80',
+                    'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80'
+                ],
+                color: '#1F2A35'
+            },
+            { 
+                id: 4, brand: 'ARMAF', model: 'CLUB DE NUIT', type: 'Árabe', gender: 'Masculino', 
+                fragranceType: 'Amaderado', price: 950, discount: 20, rating: 4.7, reviews: 890,
+                description: 'Una explosión de frescura con bergamota, cuero y pachulí. Excelente proyección.',
+                notes: 'Bergamota, Cuero, Pachulí, Vetiver',
+                images: [
+                    'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&q=80',
+                    'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80',
+                    'https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=600&q=80'
+                ],
+                color: '#4A5B6E'
+            },
+            { 
+                id: 5, brand: 'YSL', model: 'LIBRE', type: 'De Marca', gender: 'Femenino', 
+                fragranceType: 'Floral', price: 2650, discount: 5, rating: 4.8, reviews: 234,
+                description: 'Una fragancia floral audaz con lavanda, azahar y vainilla. Femenina y poderosa.',
+                notes: 'Lavanda, Azahar, Vainilla, Almizcle',
+                images: [
+                    'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=600&q=80',
+                    'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600&q=80',
+                    'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80'
+                ],
+                color: '#2D3B4A'
+            },
+            { 
+                id: 6, brand: 'RASASI', model: 'HAWAS', type: 'Árabe', gender: 'Masculino', 
+                fragranceType: 'Dulce', price: 780, discount: 25, rating: 4.6, reviews: 456,
+                description: 'Dulce y especiada con manzana, canela y vainilla. Ideal para el día a día.',
+                notes: 'Manzana, Canela, Vainilla, Almizcle',
+                images: [
+                    'https://images.unsplash.com/photo-1615160460364-6b8c9c7c3e2a?w=600&q=80',
+                    'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80',
+                    'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&q=80'
+                ],
+                color: '#4A5B6E'
+            },
+            { 
+                id: 7, brand: 'TOM FORD', model: 'OUD WOOD', type: 'De Marca', gender: 'Unisex', 
+                fragranceType: 'Amaderado', price: 3850, discount: 0, rating: 4.9, reviews: 789,
+                description: 'Oud, sándalo y especias exóticas. Una fragancia de lujo atemporal.',
+                notes: 'Oud, Sándalo, Especias, Pachulí',
+                images: [
+                    'https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=600&q=80',
+                    'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600&q=80',
+                    'https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=600&q=80'
+                ],
+                color: '#1F2A35'
+            },
+            { 
+                id: 8, brand: 'SWISS ARABIAN', model: 'LAYALI', type: 'Árabe', gender: 'Femenino', 
+                fragranceType: 'Frutal', price: 650, discount: 15, rating: 4.5, reviews: 321,
+                description: 'Frutas jugosas, flores y almizcle. Una fragancia fresca y juvenil.',
+                notes: 'Frutas, Flores, Almizcle, Cítricos',
+                images: [
+                    'https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?w=600&q=80',
+                    'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80',
+                    'https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=600&q=80'
+                ],
+                color: '#4A5B6E'
+            },
+        ];
+
+        const BRANDS = ['TODOS', 'LATTAFA', 'ARMAF', 'RASASI', 'SWISS ARABIAN', 'DIOR', 'CHANEL', 'YSL', 'TOM FORD'];
+        const TYPES = ['TODOS', 'Árabe', 'De Marca'];
+        const GENDERS = ['TODOS', 'Masculino', 'Femenino', 'Unisex'];
+        const FRAGRANCE_TYPES = ['TODOS', 'Dulce', 'Amaderado', 'Frutal', 'Floral', 'Oriental', 'Fresco', 'Especiado'];
+
+        // ---------- HELPERS ----------
+        const formatDate = (dateString) => {
+            if (!dateString) return '';
+            const date = new Date(dateString + 'T12:00:00');
+            return date.toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        };
+
+        const formatDateShort = (dateString) => {
+            if (!dateString) return '';
+            const date = new Date(dateString + 'T12:00:00');
+            return date.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+        };
+
+        const formatTime = (timeString) => {
+            if (!timeString) return '';
+            const [hours, minutes] = timeString.split(':');
+            let h = parseInt(hours, 10);
+            const ampm = h >= 12 ? 'p. m.' : 'a. m.';
+            h = h % 12;
+            h = h ? h : 12;
+            return `${h.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+        };
+
+        const generateTimeSlots = (start, end) => {
+            const slots = [];
+            let current = new Date(`2000-01-01T${start}:00`);
+            const endTime = new Date(`2000-01-01T${end}:00`);
+            while (current <= endTime) {
+                slots.push(current.toTimeString().substring(0, 5));
+                current.setMinutes(current.getMinutes() + 30);
+            }
+            return slots;
+        };
+
+        const getDiscountedPrice = (price, discount) => {
+            if (!discount) return price;
+            return price * (1 - discount / 100);
+        };
+
+        const renderStars = (rating) => {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+            let stars = '';
+            for (let i = 0; i < fullStars; i++) stars += '<i class="fas fa-star"></i>';
+            if (halfStar) stars += '<i class="fas fa-star-half-alt"></i>';
+            for (let i = 0; i < emptyStars; i++) stars += '<i class="far fa-star empty"></i>';
+            return stars;
+        };
+
+        // ---------- ESTADO DE LA APP ----------
+        const state = {
+            currentView: 'catalog',
+            isAuthenticated: false,
+            perfumes: [...INITIAL_PERFUMES],
+            orders: [],
+            selectedPerfumeForBooking: null,
+            settings: {
+                workHours: { start: '10:00', end: '20:00' },
+                blockedDays: [],
+                blockedHours: [],
+                whatsappNumber: '522202835590',
+                bankAccount: 'BBVA 0123456789 (Esencia Perfumes)'
+            },
+            toast: null,
+            confirmConfig: null,
+            adminTab: 'orders',
+            catalogFilters: { 
+                activeBrand: 'TODOS', 
+                activeType: 'TODOS', 
+                activeGender: 'TODOS',
+                activeFragrance: 'TODOS',
+                searchQuery: '', 
+                discountOnly: false 
+            },
+            serviceSearchQuery: '',
+            selectedPerfumeIds: [],
+            newServiceName: '',
+            newServicePrice: '',
+            showHeaderModal: false,
+            searchPhone: '',
+            foundOrders: null,
+            calendarDate: new Date().toISOString().split('T')[0],
+            calendarViewMode: 'day',
+            editingPerfume: null,
+            isEditModalOpen: false,
+            selectedOrder: null,
+            carouselIndex: {}
+        };
+
+        // ---------- MOTOR DE RENDERIZADO ----------
+        const root = document.getElementById('root');
+
+        function render() {
+            const { currentView, isAuthenticated, selectedPerfumeForBooking } = state;
+
+            let content = '';
+            content += renderHeader();
+            content += `<main>`;
+            if (currentView === 'catalog') {
+                content += renderPublicCatalog();
+            } else if (currentView === 'detail' && selectedPerfumeForBooking) {
+                content += renderPerfumeDetail();
+            } else if (currentView === 'booking' && selectedPerfumeForBooking) {
+                content += renderBookingView();
+            } else if (currentView === 'login') {
+                content += renderLoginView();
+            } else if (currentView === 'admin' && isAuthenticated) {
+                content += renderAdminDashboard();
+            }
+            content += `</main>`;
+            content += renderFooter();
+            content += renderToast();
+            content += renderConfirmationModal();
+            if (state.showHeaderModal) content += renderHeaderModal();
+            if (state.isEditModalOpen && state.editingPerfume) content += renderEditPerfumeModal();
+            if (state.selectedOrder) content += renderOrderDetailModal();
+
+            root.innerHTML = content;
+            attachGlobalListeners();
+        }
+
+        // ---------- COMPONENTES DE RENDERIZADO ----------
+
+        function renderHeader() {
+            const { currentView, isAuthenticated, catalogFilters } = state;
+            return `
+            <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/60 text-slate-800 sticky top-0 z-50 transition-all shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3 cursor-pointer group" onclick="setView('catalog')">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#4A5B6E] to-[#2D3B4A] flex items-center justify-center text-white shadow-md group-hover:shadow-lg group-hover:-translate-y-0.5 transition-all">
+                            <i class="fas fa-spray-can text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <span class="text-lg font-bold tracking-tight text-slate-800 uppercase">ESENCIA<span class="text-[#4A5B6E]">·</span></span>
+                            <span class="block text-[10px] text-slate-500 font-bold tracking-widest uppercase -mt-1">Perfumes Árabes & De Marca</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <button onclick="openHeaderModal()" class="flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-white hover:bg-slate-50 px-4 py-2.5 rounded-2xl border border-slate-200 hover:border-[#4A5B6E]/40 shadow-sm hover:shadow transition-all">
+                            <i class="fas fa-comment-dots text-[#4A5B6E]"></i>
+                            <span class="hidden sm:inline uppercase tracking-wider">Mis Pedidos</span>
+                            <span class="sm:hidden uppercase tracking-wider">Pedidos</span>
+                        </button>
+                        ${isAuthenticated ? `
+                            <div class="flex items-center gap-2">
+                                <button onclick="setView('admin')" class="flex items-center gap-2 text-xs font-semibold transition-all px-4 py-2.5 rounded-2xl border shadow-sm ${currentView === 'admin' ? 'bg-gradient-to-r from-[#4A5B6E] to-[#2D3B4A] border-[#2D3B4A] text-white hover:shadow-lg' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-[#4A5B6E]/40 hover:shadow'}">
+                                    <i class="fas fa-th-large text-[#A0B4C8]"></i>
+                                    <span class="hidden md:inline uppercase tracking-wider">Panel Admin</span>
+                                    <span class="w-2 h-2 rounded-full bg-[#A0B4C8] shadow-[0_0_8px_rgba(160,180,200,0.8)]"></span>
+                                </button>
+                                <button onclick="logout()" class="p-2.5 bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-500 rounded-2xl transition-colors">
+                                    <i class="fas fa-user"></i>
+                                </button>
+                            </div>
+                        ` : `
+                            <button onclick="setView('login')" class="flex items-center gap-2 text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-[#4A5B6E]/40 hover:shadow px-4 py-2.5 rounded-2xl transition-all shadow-sm">
+                                <i class="fas fa-lock text-slate-400"></i>
+                                <span class="hidden md:inline uppercase tracking-wider">Admin</span>
+                            </button>
+                        `}
+                    </div>
+                </div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-3 flex items-center gap-2 overflow-x-auto no-scrollbar border-t border-slate-100/60 pt-2">
+                    <button onclick="toggleTypeFilter('TODOS')" class="px-4 py-1.5 rounded-xl text-xs font-bold tracking-wider transition-all uppercase whitespace-nowrap ${catalogFilters.activeType === 'TODOS' ? 'bg-[#4A5B6E] text-white shadow-sm' : 'text-slate-500 hover:text-[#4A5B6E] hover:bg-slate-50'}">Todos</button>
+                    <button onclick="toggleTypeFilter('Árabe')" class="px-4 py-1.5 rounded-xl text-xs font-bold tracking-wider transition-all uppercase whitespace-nowrap ${catalogFilters.activeType === 'Árabe' ? 'bg-[#4A5B6E] text-white shadow-sm' : 'text-slate-500 hover:text-[#4A5B6E] hover:bg-slate-50'}">Árabes</button>
+                    <button onclick="toggleTypeFilter('De Marca')" class="px-4 py-1.5 rounded-xl text-xs font-bold tracking-wider transition-all uppercase whitespace-nowrap ${catalogFilters.activeType === 'De Marca' ? 'bg-[#4A5B6E] text-white shadow-sm' : 'text-slate-500 hover:text-[#4A5B6E] hover:bg-slate-50'}">De Marca</button>
+                    <span class="text-slate-300 mx-1">|</span>
+                    <button onclick="toggleGenderFilter('Masculino')" class="px-4 py-1.5 rounded-xl text-xs font-bold tracking-wider transition-all uppercase whitespace-nowrap ${catalogFilters.activeGender === 'Masculino' ? 'bg-[#4A5B6E] text-white shadow-sm' : 'text-slate-500 hover:text-[#4A5B6E] hover:bg-slate-50'}">Masculino</button>
+                    <button onclick="toggleGenderFilter('Femenino')" class="px-4 py-1.5 rounded-xl text-xs font-bold tracking-wider transition-all uppercase whitespace-nowrap ${catalogFilters.activeGender === 'Femenino' ? 'bg-[#4A5B6E] text-white shadow-sm' : 'text-slate-500 hover:text-[#4A5B6E] hover:bg-slate-50'}">Femenino</button>
+                    <button onclick="toggleGenderFilter('Unisex')" class="px-4 py-1.5 rounded-xl text-xs font-bold tracking-wider transition-all uppercase whitespace-nowrap ${catalogFilters.activeGender === 'Unisex' ? 'bg-[#4A5B6E] text-white shadow-sm' : 'text-slate-500 hover:text-[#4A5B6E] hover:bg-slate-50'}">Unisex</button>
+                    <span class="text-slate-300 mx-1">|</span>
+                    <button onclick="toggleDiscountFilter()" class="px-4 py-1.5 rounded-xl text-xs font-bold tracking-wider transition-all uppercase whitespace-nowrap ${catalogFilters.discountOnly ? 'bg-amber-600 text-white shadow-sm' : 'text-amber-600 hover:bg-amber-50'}"><i class="fas fa-tag mr-1"></i> Descuentos</button>
+                </div>
+            </header>`;
+        }
+
+        function renderPublicCatalog() {
+            const { perfumes } = state;
+            const { activeBrand, activeType, activeGender, activeFragrance, searchQuery, discountOnly } = state.catalogFilters;
+
+            const filteredPerfumes = perfumes.filter(perfume => {
+                const matchesBrand = activeBrand === 'TODOS' || perfume.brand === activeBrand;
+                const matchesType = activeType === 'TODOS' || perfume.type === activeType;
+                const matchesGender = activeGender === 'TODOS' || perfume.gender === activeGender;
+                const matchesFragrance = activeFragrance === 'TODOS' || perfume.fragranceType === activeFragrance;
+                const matchesSearch = perfume.model.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      perfume.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      perfume.notes.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesDiscount = !discountOnly || perfume.discount > 0;
+                return matchesBrand && matchesType && matchesGender && matchesFragrance && matchesSearch && matchesDiscount;
+            });
+
+            return `
+            <div class="min-h-screen text-slate-800 bg-[#F4F7FC] pb-20">
+                <section class="bg-white border-b border-slate-200/60 py-8 md:py-12 px-4 shadow-sm relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-100/60 via-white to-white pointer-events-none"></div>
+                    <div class="max-w-5xl mx-auto text-center relative z-10">
+                        <h1 class="text-4xl sm:text-6xl font-black tracking-tighter text-slate-800 uppercase">
+                            Fragancias <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#4A5B6E] to-[#2D3B4A]">Exclusivas</span>
+                        </h1>
+                        <p class="text-sm text-slate-500 mt-3 font-medium tracking-wide">Perfumes árabes y de marca · Elegancia en cada nota</p>
+                    </div>
+                </section>
+
+                <main class="max-w-7xl mx-auto px-4 pt-10">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
+                        <div class="w-full md:max-w-md relative group">
+                            <i class="fas fa-search text-slate-400 absolute left-4 top-3.5 group-focus-within:text-[#4A5B6E] transition-colors"></i>
+                            <input type="text" id="catalog-search" placeholder="Buscar por marca, modelo o notas..." 
+                                class="w-full bg-white border border-slate-200 rounded-2xl pl-11 pr-10 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20 transition-all font-medium shadow-sm"
+                                value="${searchQuery}" oninput="updateCatalogSearch(this.value)">
+                            ${searchQuery ? `<button onclick="clearCatalogSearch()" class="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600 transition-colors"><i class="fas fa-times"></i></button>` : ''}
+                        </div>
+                        <button onclick="copyBankAccount()" class="w-full md:w-auto px-6 py-3 bg-white hover:bg-[#FAFAF8] border border-slate-200 rounded-2xl text-xs font-bold text-slate-600 hover:border-[#4A5B6E]/40 transition-all flex items-center justify-center gap-2 uppercase tracking-wider shadow-sm hover:shadow hover:-translate-y-0.5 duration-300">
+                            <i class="fas fa-copy text-slate-400"></i>
+                            <span id="copy-bank-text">Copiar Cuenta Bancaria</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar mb-4">
+                        <i class="fas fa-filter text-slate-400 shrink-0 mr-2"></i>
+                        ${BRANDS.map(brand => `
+                            <button onclick="toggleBrandFilter('${brand}')" class="px-5 py-2.5 rounded-xl text-xs font-bold tracking-widest transition-all duration-300 uppercase whitespace-nowrap shrink-0 ${activeBrand === brand ? 'bg-[#4A5B6E] text-white shadow-md scale-105' : 'bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-800 shadow-sm'}">
+                                ${brand}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div class="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar mb-8">
+                        <i class="fas fa-spa text-slate-400 shrink-0 mr-2"></i>
+                        ${FRAGRANCE_TYPES.map(ft => `
+                            <button onclick="toggleFragranceFilter('${ft}')" class="px-4 py-2 rounded-xl text-xs font-bold tracking-wider transition-all uppercase whitespace-nowrap shrink-0 ${activeFragrance === ft ? 'bg-[#4A5B6E] text-white shadow-md' : 'bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-800 shadow-sm'}">
+                                ${ft}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        ${filteredPerfumes.map(perfume => {
+                            const accentColor = perfume.color || '#4A5B6E';
+                            const finalPrice = getDiscountedPrice(perfume.price, perfume.discount);
+                            const hasDiscount = perfume.discount > 0;
+                            
+                            return `
+                            <div onclick="selectPerfume(${perfume.id})" class="perfume-card group bg-white rounded-[1.5rem] p-5 cursor-pointer flex flex-col relative overflow-hidden" style="border-color: ${accentColor}; border-width: 2px;">
+                                <div class="color-quarter-circle" style="background-color: ${accentColor};"></div>
+                                <div class="card-content">
+                                    <div class="flex justify-between items-start mb-2 relative z-10">
+                                        <span class="text-xs font-black text-slate-400">${perfume.type}</span>
+                                        <div class="flex items-center gap-1">
+                                            ${hasDiscount ? `<span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">-${perfume.discount}%</span>` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="relative h-48 my-2 flex items-center justify-center bg-slate-50 rounded-2xl overflow-hidden">
+                                        <img src="${perfume.images[0]}" alt="${perfume.model}" class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80'">
+                                    </div>
+                                    <div class="mt-auto space-y-2 pt-2 relative z-10">
+                                        <div class="text-center">
+                                            <h3 class="font-black text-slate-800 text-base group-hover:text-[#4A5B6E] transition-colors uppercase tracking-tight truncate">${perfume.model}</h3>
+                                            <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">${perfume.brand}</p>
+                                        </div>
+                                        <div class="flex justify-center gap-1">
+                                            <span class="text-[10px] font-black px-3 py-1 rounded-full text-white uppercase tracking-widest shadow-sm" style="background-color: ${accentColor};">${perfume.gender}</span>
+                                            <span class="fragrance-badge bg-slate-100 text-slate-600">${perfume.fragranceType}</span>
+                                        </div>
+                                        <div class="flex justify-center items-center gap-1 star-rating text-xs">
+                                            ${renderStars(perfume.rating)}
+                                            <span class="text-slate-400 text-[10px] ml-1">(${perfume.reviews})</span>
+                                        </div>
+                                        <div class="text-center">
+                                            ${hasDiscount ? `
+                                                <span class="text-xs text-slate-400 line-through">$${perfume.price} MXN</span>
+                                                <span class="text-lg font-black text-[#2D3B4A] ml-2">$${finalPrice.toFixed(0)} MXN</span>
+                                            ` : `
+                                                <span class="text-lg font-black text-slate-800">$${perfume.price} MXN</span>
+                                            `}
+                                        </div>
+                                        <p class="text-center text-[10px] text-slate-400 font-medium italic truncate">${perfume.notes}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `}).join('')}
+                    </div>
+
+                    ${filteredPerfumes.length === 0 ? `
+                        <div class="text-center py-20 bg-white rounded-[2rem] border border-slate-200 shadow-sm">
+                            <i class="fas fa-exclamation-circle text-slate-300 text-5xl mx-auto mb-3"></i>
+                            <h3 class="text-lg font-black text-slate-700 uppercase tracking-tight">Sin resultados</h3>
+                            <p class="text-sm text-slate-400 mt-1 font-medium">No se encontraron perfumes con esos filtros.</p>
+                        </div>
+                    ` : ''}
+                </main>
+            </div>`;
+        }
+
+        function renderPerfumeDetail() {
+            const perfume = state.selectedPerfumeForBooking;
+            if (!perfume) return '';
+            const accentColor = perfume.color || '#4A5B6E';
+            const finalPrice = getDiscountedPrice(perfume.price, perfume.discount);
+            const hasDiscount = perfume.discount > 0;
+            const currentIdx = state.carouselIndex[perfume.id] || 0;
+            const images = perfume.images || [perfume.image || ''];
+
+            return `
+            <div class="min-h-screen text-slate-800 bg-[#F4F7FC] py-10 px-4">
+                <div class="max-w-6xl mx-auto space-y-6">
+                    <button onclick="setView('catalog')" class="booking-btn-volver">
+                        <i class="fas fa-arrow-left text-[#4A5B6E]"></i> VOLVER AL CATÁLOGO
+                    </button>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white border border-slate-200 rounded-[2rem] p-4 shadow-sm">
+                            <div class="carousel-container" style="background: radial-gradient(circle at 50% 50%, ${accentColor}08, white 70%);">
+                                <div class="carousel-slide" id="carousel-${perfume.id}" style="transform: translateX(-${currentIdx * 100}%);">
+                                    ${images.map(img => `
+                                        <img src="${img}" alt="${perfume.model}" 
+                                             onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80'">
+                                    `).join('')}
+                                </div>
+                                ${images.length > 1 ? `
+                                    <button class="carousel-btn prev" onclick="event.stopPropagation(); prevImage(${perfume.id}, ${images.length})">
+                                        <i class="fas fa-chevron-left text-slate-600 text-sm"></i>
+                                    </button>
+                                    <button class="carousel-btn next" onclick="event.stopPropagation(); nextImage(${perfume.id}, ${images.length})">
+                                        <i class="fas fa-chevron-right text-slate-600 text-sm"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+                            <div class="flex justify-center gap-2 mt-4">
+                                ${images.map((_, i) => `
+                                    <button onclick="setImage(${perfume.id}, ${i})" class="w-2.5 h-2.5 rounded-full transition-all ${i === currentIdx ? 'bg-[#4A5B6E] scale-125' : 'bg-slate-300 hover:bg-slate-400'}"></button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-[2rem] p-8 shadow-sm space-y-5">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-[10px] font-black px-4 py-1.5 rounded-full text-white uppercase tracking-widest" style="background-color: ${accentColor};">${perfume.brand}</span>
+                                <span class="text-[10px] font-black px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 uppercase tracking-widest">${perfume.type}</span>
+                                <span class="fragrance-badge bg-amber-50 text-amber-700">${perfume.fragranceType}</span>
+                            </div>
+                            <h1 class="text-4xl font-black text-slate-800 uppercase tracking-tighter">${perfume.model}</h1>
+                            <div class="flex items-center gap-3">
+                                <div class="star-rating text-lg">${renderStars(perfume.rating)}</div>
+                                <span class="text-sm text-slate-500 font-bold">${perfume.rating} · ${perfume.reviews} reseñas</span>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Precio</span>
+                                    <div class="text-right">
+                                        ${hasDiscount ? `
+                                            <span class="text-sm text-slate-400 line-through">$${perfume.price} MXN</span>
+                                            <span class="text-3xl font-black text-[#2D3B4A] ml-2">$${finalPrice.toFixed(0)} MXN</span>
+                                            <span class="block text-[10px] font-bold text-amber-600 mt-1">-${perfume.discount}% de descuento</span>
+                                        ` : `
+                                            <span class="text-3xl font-black text-slate-800">$${perfume.price} MXN</span>
+                                        `}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Descripción</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">${perfume.description}</p>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Notas Olfativas</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    ${perfume.notes.split(',').map(n => `
+                                        <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">${n.trim()}</span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Género</h3>
+                                <span class="text-sm font-bold text-slate-700">${perfume.gender}</span>
+                            </div>
+                            <button onclick="startPurchase(${perfume.id})" class="booking-btn-red mt-4">
+                                <i class="fas fa-shopping-bag mr-2"></i> COMPRAR AHORA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderBookingView() {
+            const perfume = state.selectedPerfumeForBooking;
+            if (!perfume) return '';
+            const finalPrice = getDiscountedPrice(perfume.price, perfume.discount);
+            const hasDiscount = perfume.discount > 0;
+
+            return `
+            <div class="min-h-screen text-slate-800 bg-[#F4F7FC] py-10 px-4">
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <button onclick="setView('detail')" class="booking-btn-volver">
+                        <i class="fas fa-arrow-left text-[#4A5B6E]"></i> VOLVER AL DETALLE
+                    </button>
+
+                    <div class="bg-white border border-slate-200 rounded-[2rem] p-6 md:p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-shopping-bag text-2xl text-slate-800"></i>
+                            <h2 class="text-2xl font-black text-slate-800 tracking-tight uppercase">FINALIZAR COMPRA</h2>
+                        </div>
+
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 bg-white rounded-xl border border-slate-200 flex items-center justify-center p-1">
+                                    <img src="${perfume.images[0]}" alt="${perfume.model}" class="max-w-full max-h-full object-contain">
+                                </div>
+                                <div>
+                                    <div class="font-bold text-slate-800">${perfume.brand} ${perfume.model}</div>
+                                    <div class="text-xs text-slate-500 font-medium">${perfume.fragranceType} · ${perfume.gender}</div>
+                                    <div class="text-xs text-slate-400 italic">${perfume.notes}</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-200">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total a pagar</span>
+                                <div class="text-right">
+                                    ${hasDiscount ? `
+                                        <span class="text-xs text-slate-400 line-through">$${perfume.price} MXN</span>
+                                        <span class="text-xl font-black text-[#2D3B4A] ml-2">$${finalPrice.toFixed(0)} MXN</span>
+                                    ` : `
+                                        <span class="text-xl font-black text-slate-800">$${perfume.price} MXN</span>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-5" novalidate>
+                            <div>
+                                <label class="booking-label"><i class="fas fa-user mr-1"></i> NOMBRE COMPLETO</label>
+                                <input type="text" id="booking-name" placeholder="" class="booking-input">
+                                <div id="error-booking-name" class="error-message hidden"><i class="fas fa-exclamation-circle"></i> El nombre es obligatorio</div>
+                            </div>
+
+                            <div>
+                                <label class="booking-label"><i class="fas fa-phone-alt mr-1"></i> TELÉFONO (WHATSAPP)</label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 bg-slate-50 text-slate-500 font-bold text-sm">+52</span>
+                                    <input type="tel" id="booking-phone" placeholder="Ej: 2202835590" class="flex-1 booking-input rounded-l-none" oninput="this.value = this.value.replace(/\\D/g,'').slice(0,10)">
+                                </div>
+                                <div id="error-booking-phone" class="error-message hidden"><i class="fas fa-exclamation-circle"></i> Ingresa un teléfono de 10 dígitos</div>
+                            </div>
+
+                            <div>
+                                <label class="booking-label"><i class="fas fa-map-marker-alt mr-1"></i> DIRECCIÓN DE ENVÍO</label>
+                                <input type="text" id="booking-details" placeholder="Calle, número, colonia, ciudad..." class="booking-input">
+                                <div id="error-booking-details" class="error-message hidden"><i class="fas fa-exclamation-circle"></i> Ingresa tu dirección de envío</div>
+                            </div>
+
+                            <div>
+                                <label class="booking-label"><i class="fas fa-clipboard-list mr-1"></i> OBSERVACIONES (Opcional)</label>
+                                <textarea id="booking-notes" rows="2" placeholder="Ej: Entregar después de las 5pm..." class="booking-input resize-none"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="booking-label"><i class="fas fa-credit-card mr-1"></i> MÉTODO DE PAGO</label>
+                                <select id="booking-payment" class="booking-input booking-select">
+                                    <option value="Transferencia">Transferencia bancaria</option>
+                                    <option value="Efectivo">Efectivo contra entrega</option>
+                                    <option value="Tarjeta">Tarjeta de crédito/débito</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" id="booking-submit" class="booking-btn-red mt-2">
+                                CONFIRMAR COMPRA
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderLoginView() {
+            return `
+            <div class="min-h-[85vh] flex flex-col justify-center items-center py-12 px-4 bg-[#F4F7FC]">
+                <div class="w-full max-w-md bg-white border border-slate-200/80 rounded-[2rem] p-8 shadow-xl space-y-6 relative overflow-hidden">
+                    <div class="text-center space-y-2">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#4A5B6E] to-[#2D3B4A] flex items-center justify-center mx-auto text-white shadow-lg mb-4">
+                            <i class="fas fa-lock text-[#A0B4C8] text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Acceso Administrativo</h2>
+                        <p class="text-xs text-slate-500 font-medium">Gestión de ESENCIA Perfumes</p>
+                    </div>
+                    <form onsubmit="handleLogin(event)" class="space-y-5 mt-8">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Usuario</label>
+                            <div class="relative">
+                                <i class="fas fa-user text-slate-400 absolute left-4 top-3.5"></i>
+                                <input type="text" id="login-username" required placeholder="admin" class="bg-[#F4F7FC] border border-slate-200 focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20 text-slate-800 rounded-2xl block w-full pl-11 pr-4 py-3 text-sm focus:outline-none transition-all font-medium shadow-inner">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Contraseña</label>
+                            <div class="relative">
+                                <i class="fas fa-lock text-slate-400 absolute left-4 top-3.5"></i>
+                                <input type="password" id="login-password" required placeholder="••••••••" class="bg-[#F4F7FC] border border-slate-200 focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20 text-slate-800 rounded-2xl block w-full pl-11 pr-11 py-3 text-sm focus:outline-none transition-all font-medium shadow-inner">
+                                <button type="button" onclick="togglePasswordVisibility()" class="absolute right-4 top-3.5 text-slate-400 hover:text-[#4A5B6E] transition-colors"><i class="fas fa-eye" id="toggle-password-icon"></i></button>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full py-4 px-4 rounded-2xl shadow-[0_4px_14px_0_rgba(74,91,110,0.25)] hover:shadow-[0_6px_20px_rgba(74,91,110,0.23)] hover:-translate-y-0.5 text-xs font-bold text-white bg-gradient-to-r from-[#4A5B6E] to-[#2D3B4A] hover:from-[#3D4C5C] hover:to-[#1F2A35] focus:outline-none transition-all duration-300 uppercase tracking-widest mt-2">Iniciar Sesión</button>
+                    </form>
+                    <div class="pt-6 mt-4 border-t border-slate-100 text-center">
+                        <button onclick="fillDemoCredentials()" class="text-xs text-slate-400 hover:text-[#4A5B6E] font-bold transition-colors">⚡ Cargar credenciales de prueba</button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderAdminDashboard() {
+            const { adminTab } = state;
+            const pendingCount = state.orders.filter(a => a.status === 'PENDING').length;
+            return `
+            <div class="min-h-screen bg-[#F4F7FC] text-slate-800 py-10 px-4">
+                <div class="max-w-7xl mx-auto space-y-8">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div>
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-black uppercase tracking-widest mb-2">
+                                <i class="fas fa-th-large text-[#4A5B6E]"></i> Admin
+                            </div>
+                            <h1 class="text-3xl font-black text-slate-800 tracking-tight uppercase">Panel de Control</h1>
+                        </div>
+                        <div class="flex bg-white rounded-2xl p-1.5 shadow-sm border border-slate-200 overflow-x-auto">
+                            <button onclick="setAdminTab('orders')" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all uppercase tracking-widest whitespace-nowrap ${adminTab === 'orders' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'}">Pedidos ${pendingCount > 0 ? `<span class="ml-1.5 bg-amber-500 text-white px-2 py-0.5 rounded-full text-[10px]">${pendingCount}</span>` : ''}</button>
+                            <button onclick="setAdminTab('catalog')" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all uppercase tracking-widest whitespace-nowrap ${adminTab === 'catalog' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'}">Catálogo</button>
+                            <button onclick="setAdminTab('settings')" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all uppercase tracking-widest whitespace-nowrap ${adminTab === 'settings' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'}">Ajustes</button>
+                            <button onclick="setAdminTab('finance')" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all uppercase tracking-widest whitespace-nowrap ${adminTab === 'finance' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'}">Finanzas</button>
+                        </div>
+                    </div>
+                    ${adminTab === 'orders' ? renderAdminOrdersTab() : ''}
+                    ${adminTab === 'catalog' ? renderAdminCatalogTab() : ''}
+                    ${adminTab === 'settings' ? renderAdminSettingsTab() : ''}
+                    ${adminTab === 'finance' ? renderAdminFinanceTab() : ''}
+                </div>
+            </div>`;
+        }
+
+        function renderAdminOrdersTab() {
+            const orders = state.orders;
+            const today = state.calendarDate;
+            const isWeekView = state.calendarViewMode === 'week';
+
+            let filteredOrders = orders;
+            if (!isWeekView) {
+                filteredOrders = orders.filter(a => a.date === today);
+            } else {
+                const curr = new Date(today + 'T12:00:00');
+                const first = curr.getDate() - curr.getDay();
+                const weekDates = [];
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(curr);
+                    d.setDate(first + i);
+                    weekDates.push(d.toISOString().split('T')[0]);
+                }
+                filteredOrders = orders.filter(a => weekDates.includes(a.date));
+            }
+
+            return `
+            <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm overflow-hidden animate-fade-in">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fas fa-calendar-alt text-[#4A5B6E]"></i> Calendario de Pedidos
+                    </h3>
+                    <div class="flex items-center gap-2">
+                        <button onclick="setCalendarView('day')" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${!isWeekView ? 'bg-[#4A5B6E] text-white shadow-md' : 'bg-white border border-slate-200 text-slate-500 hover:bg-slate-50'}">Por Día</button>
+                        <button onclick="setCalendarView('week')" class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${isWeekView ? 'bg-[#4A5B6E] text-white shadow-md' : 'bg-white border border-slate-200 text-slate-500 hover:bg-slate-50'}">Por Semana</button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between mb-6">
+                    <button onclick="changeCalendarDate(-1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-colors shadow-sm">
+                        <i class="fas fa-chevron-left text-slate-500"></i>
+                    </button>
+                    <h4 class="text-lg font-black text-slate-800 uppercase tracking-tight text-center">${formatDate(today)}</h4>
+                    <button onclick="changeCalendarDate(1)" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-colors shadow-sm">
+                        <i class="fas fa-chevron-right text-slate-500"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    ${filteredOrders.length === 0 ? `
+                        <div class="text-center py-12 bg-[#F4F7FC] rounded-2xl border border-slate-200">
+                            <i class="fas fa-calendar-times text-slate-300 text-4xl mb-3"></i>
+                            <p class="text-sm font-medium text-slate-400">No hay pedidos para este período.</p>
+                        </div>
+                    ` : filteredOrders.map(order => `
+                        <div class="bg-[#F4F7FC] border border-slate-200 rounded-2xl p-5 shadow-sm hover:border-[#4A5B6E]/30 transition-colors cursor-pointer" onclick="openOrderDetail('${order.id}')">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm font-black text-slate-800">${formatTime(order.time)}</span>
+                                    <span class="text-xs font-bold text-slate-500">— ${order.customerName}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    ${getStatusBadge(order.status)}
+                                    <button onclick="event.stopPropagation(); deleteOrder('${order.id}')" class="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                                        <i class="fas fa-trash-alt text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-start gap-4">
+                                <div class="w-16 h-16 bg-white rounded-xl border border-slate-200 flex items-center justify-center p-1 shrink-0">
+                                    <img src="${order.perfume?.images?.[0] || ''}" alt="${order.perfume?.model}" class="max-w-full max-h-full object-contain">
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="text-sm font-bold text-slate-800">${order.perfume?.brand} ${order.perfume?.model} (${order.perfume?.fragranceType})</div>
+                                    <div class="text-xs text-slate-500 flex items-center gap-2 flex-wrap">
+                                        <span class="flex items-center gap-1"><i class="fas fa-venus-mars text-slate-400"></i> ${order.perfume?.gender}</span>
+                                        <span class="flex items-center gap-1"><i class="fas fa-tag text-slate-400"></i> $${getDiscountedPrice(order.perfume?.price || 0, order.perfume?.discount || 0).toFixed(0)} MXN</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 font-medium"><i class="fas fa-map-marker-alt text-slate-400"></i> ${order.address || 'Sin dirección'}</div>
+                                    ${order.notes ? `<div class="text-xs text-slate-500 italic mt-1">"${order.notes}"</div>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>`;
+        }
+
+        function renderOrderDetailModal() {
+            const order = state.selectedOrder;
+            if (!order) return '';
+
+            const invested = Number(order.costRefactions) || 0;
+            const charged = Number(order.totalCharge) || 0;
+            const netProfit = charged - invested;
+
+            return `
+            <div class="fixed inset-0 modal-overlay flex items-center justify-center z-[250] p-4">
+                <div class="appt-detail-container max-w-2xl w-full">
+                    <button onclick="closeOrderDetail()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 transition-colors" style="position:absolute;top:20px;right:20px;">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+
+                    <div class="appt-detail-header">Detalles del Pedido</div>
+
+                    <div class="appt-summary-card">
+                        <div class="appt-summary-top">
+                            <div>
+                                <div class="appt-summary-time">${formatTime(order.time)} - ${order.customerName}</div>
+                                <div class="appt-summary-service">${order.perfume?.brand} ${order.perfume?.model}</div>
+                            </div>
+                            ${getStatusBadge(order.status)}
+                        </div>
+
+                        <div class="appt-tags">
+                            <span><i class="fas fa-venus-mars" style="color:#64748b;"></i> ${order.perfume?.gender}</span>
+                            <span><i class="fas fa-spa" style="color:#64748b;"></i> ${order.perfume?.fragranceType}</span>
+                            <span><i class="fas fa-star" style="color:#f59e0b;"></i> ${order.perfume?.rating}</span>
+                        </div>
+
+                        <div class="appt-vehicle-card">
+                            <div class="appt-vehicle-img">
+                                <img src="${order.perfume?.images?.[0] || ''}" alt="${order.perfume?.model}" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80'">
+                            </div>
+                            <div class="appt-vehicle-info">
+                                <h4>${order.perfume?.brand} ${order.perfume?.model}</h4>
+                                <p>${order.perfume?.type} · ${order.perfume?.gender}</p>
+                                <div class="appt-vehicle-tags">
+                                    <span><i class="fas fa-tag" style="color:#64748b;"></i> ${order.perfume?.notes}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="appt-detail-info">
+                            <div class="appt-detail-info-row">
+                                <span class="lbl">Teléfono:</span>
+                                <span class="val">${order.customerPhone}</span>
+                            </div>
+                            <div class="appt-detail-info-row">
+                                <span class="lbl">Dirección:</span>
+                                <span class="val">${order.address || 'No especificada'}</span>
+                            </div>
+                            <div class="appt-detail-info-row">
+                                <span class="lbl">Pago:</span>
+                                <span class="val">${order.paymentMethod || 'No especificado'}</span>
+                            </div>
+                            ${order.notes ? `
+                            <div class="appt-detail-info-row">
+                                <span class="lbl">Observaciones:</span>
+                                <span class="val">${order.notes}</span>
+                            </div>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="liquidation-box">
+                        <div class="liq-title">Liquidación</div>
+                        <div class="liq-grid">
+                            <div>
+                                <label>COSTO PERFUME (MXN)</label>
+                                <input type="number" id="detail-cost-refactions" value="${invested.toFixed(2)}" step="0.01" onchange="updateLiquidation('${order.id}')" oninput="updateLiquidation('${order.id}')">
+                            </div>
+                            <div>
+                                <label>COBRO TOTAL (MXN)</label>
+                                <input type="number" id="detail-total-charge" value="${charged.toFixed(2)}" step="0.01" onchange="updateLiquidation('${order.id}')" oninput="updateLiquidation('${order.id}')">
+                            </div>
+                        </div>
+                        <div class="mt-3 text-xs font-bold text-slate-600 text-center">
+                            Ganancia Neta: <span id="detail-net-profit" class="text-green-700">$${netProfit.toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="booking-label" style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+                            <i class="fas fa-clipboard-list"></i> NOTAS DEL VENDEDOR
+                        </label>
+                        <textarea id="detail-mechanic-notes" rows="4" placeholder="Escribe notas adicionales sobre el pedido..." class="booking-input" style="resize:vertical;">${order.mechanicNotes || ''}</textarea>
+                    </div>
+
+                    <div class="appt-actions-row">
+                        <button onclick="saveMechanicNotes('${order.id}')" class="btn-action btn-action-guardar">
+                            <i class="fas fa-save"></i> GUARDAR NOTAS
+                        </button>
+                        ${order.status === 'PENDING' ? `
+                            <button onclick="setOrderStatusFromDetail('${order.id}', 'COMPLETED')" class="btn-action btn-action-terminada">
+                                <i class="fas fa-check-circle"></i> COMPLETADO
+                            </button>
+                            <button onclick="setOrderStatusFromDetail('${order.id}', 'CANCELLED')" class="btn-action btn-action-inconveniente">
+                                <i class="fas fa-exclamation-triangle"></i> CANCELADO
+                            </button>
+                        ` : ''}
+                        <button onclick="deleteOrderFromDetail('${order.id}')" class="btn-action btn-action-eliminar">
+                            <i class="fas fa-trash-alt"></i> ELIMINAR
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderAdminCatalogTab() {
+            const perfumes = state.perfumes;
+            return `
+            <div class="space-y-8 animate-fade-in">
+                <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm">
+                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2"><i class="fas fa-plus text-[#4A5B6E]"></i> Nuevo Perfume</h3>
+                    <form onsubmit="addNewPerfume(event)" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Marca</label>
+                                <select id="new-perfume-brand" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                                    <option value="">Selecciona</option>
+                                    ${BRANDS.filter(b => b !== 'TODOS').map(b => `<option value="${b}">${b}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Tipo</label>
+                                <select id="new-perfume-type" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                                    <option value="Árabe">Árabe</option>
+                                    <option value="De Marca">De Marca</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Modelo</label><input type="text" id="new-perfume-model" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20" placeholder="Ej. ASAD"></div>
+                            <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Género</label>
+                                <select id="new-perfume-gender" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Unisex">Unisex</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Tipo de Fragancia</label>
+                                <select id="new-perfume-fragrance" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                                    ${FRAGRANCE_TYPES.filter(f => f !== 'TODOS').map(f => `<option value="${f}">${f}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Rating (1-5)</label><input type="number" id="new-perfume-rating" step="0.1" min="1" max="5" value="4.5" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Precio (MXN)</label><input type="number" id="new-perfume-price" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20" placeholder="0.00"></div>
+                            <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Descuento (%)</label><input type="number" id="new-perfume-discount" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20" placeholder="0" value="0"></div>
+                        </div>
+                        <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Notas Olfativas</label><input type="text" id="new-perfume-notes" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20" placeholder="Ej. Cuero, Vainilla, Ámbar"></div>
+                        <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Descripción</label><textarea id="new-perfume-description" rows="2" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20" placeholder="Descripción del perfume..."></textarea></div>
+                        <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">URLs de Imágenes (separadas por coma)</label><input type="text" id="new-perfume-images" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-xs font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20" placeholder="https://img1.jpg, https://img2.jpg"></div>
+                        <button type="submit" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-2xl text-xs uppercase tracking-widest transition-colors shadow-md mt-2">Agregar al Catálogo</button>
+                    </form>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm overflow-hidden">
+                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2"><i class="fas fa-th-large text-[#4A5B6E]"></i> Inventario (${perfumes.length})</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse admin-table">
+                            <thead><tr class="border-b border-slate-200"><th class="pb-3 px-4">Modelo</th><th class="pb-3 px-4">Marca / Tipo</th><th class="pb-3 px-4">Fragancia</th><th class="pb-3 px-4">Precio</th><th class="pb-3 px-4">Rating</th><th class="pb-3 px-4 text-right">Acciones</th></tr></thead>
+                            <tbody>
+                                ${perfumes.map(perfume => {
+                                    const finalPrice = getDiscountedPrice(perfume.price, perfume.discount);
+                                    return `
+                                    <tr class="border-b border-slate-100/50 hover:bg-[#F4F7FC] transition-colors group">
+                                        <td class="py-4 px-4"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-white border border-slate-200 rounded-xl p-1 flex items-center justify-center"><img src="${perfume.images[0]}" alt="${perfume.model}" class="max-w-full max-h-full object-contain"></div><span class="text-sm font-bold text-slate-800 uppercase">${perfume.model}</span></div></td>
+                                        <td class="py-4 px-4"><span class="inline-block px-2 py-1 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-bold uppercase tracking-widest mb-1">${perfume.brand}</span><div class="text-xs font-bold text-[#4A5B6E]">${perfume.type} · ${perfume.gender}</div></td>
+                                        <td class="py-4 px-4"><span class="fragrance-badge bg-amber-50 text-amber-700">${perfume.fragranceType}</span></td>
+                                        <td class="py-4 px-4">
+                                            ${perfume.discount ? `
+                                                <span class="text-xs text-slate-400 line-through">$${perfume.price}</span>
+                                                <span class="text-sm font-bold text-slate-800 block">$${finalPrice.toFixed(0)} MXN</span>
+                                                <span class="text-[10px] font-bold text-amber-600">-${perfume.discount}%</span>
+                                            ` : `
+                                                <span class="text-sm font-bold text-slate-800">$${perfume.price} MXN</span>
+                                            `}
+                                        </td>
+                                        <td class="py-4 px-4"><div class="star-rating text-xs">${renderStars(perfume.rating)}</div><span class="text-[10px] text-slate-400">${perfume.reviews} reseñas</span></td>
+                                        <td class="py-4 px-4 text-right">
+                                            <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button onclick="openEditPerfumeModal(${perfume.id})" class="p-2 text-[#4A5B6E] hover:bg-slate-100 hover:text-[#2D3B4A] rounded-xl transition-colors"><i class="fas fa-edit"></i></button>
+                                                <button onclick="confirmDeletePerfume(${perfume.id})" class="p-2 text-red-400 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors"><i class="fas fa-trash-alt"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `}).join('')}
+                                ${perfumes.length === 0 ? `<tr><td colspan="6" class="py-8 text-center text-xs font-medium text-slate-400">Catálogo vacío. Agrega perfumes para comenzar.</td></tr>` : ''}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderAdminSettingsTab() {
+            const { settings } = state;
+            return `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
+                <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm">
+                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2"><i class="fas fa-clock text-[#4A5B6E]"></i> Horario de Atención</h3>
+                    <div class="space-y-4">
+                        <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Hora de Apertura</label><input type="time" id="work-start" value="${settings.workHours.start}" onchange="updateWorkHour('start', this.value)" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20"></div>
+                        <div><label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Hora de Cierre</label><input type="time" id="work-end" value="${settings.workHours.end}" onchange="updateWorkHour('end', this.value)" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20"></div>
+                        <button onclick="saveWorkHours()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-2xl text-xs uppercase tracking-widest transition-colors shadow-md mt-4">Guardar Horarios</button>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm">
+                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2"><i class="fas fa-calendar text-red-500"></i> Días de Descanso</h3>
+                    <form onsubmit="addBlockedDate(event)" class="flex gap-2 mb-4">
+                        <input type="date" id="new-blocked-date" required class="flex-1 bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                        <button type="submit" class="bg-gradient-to-r from-slate-700 to-slate-800 text-white px-4 py-2 rounded-2xl text-xs font-bold uppercase tracking-wider shadow-md hover:-translate-y-0.5 transition-transform">Agregar</button>
+                    </form>
+                    <div class="space-y-2 max-h-48 overflow-y-auto">
+                        ${settings.blockedDays.map((d, i) => `
+                            <div class="flex justify-between items-center bg-[#F4F7FC] border border-slate-200 p-3 rounded-xl">
+                                <span class="text-xs font-bold text-slate-700">${formatDate(d.date)}</span>
+                                <button onclick="removeBlockedDate('${d.date}')" class="text-red-400 hover:text-red-600 transition-colors"><i class="fas fa-times"></i></button>
+                            </div>
+                        `).join('')}
+                        ${settings.blockedDays.length === 0 ? '<p class="text-xs text-slate-400 text-center py-4">No hay días bloqueados registrados.</p>' : ''}
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm md:col-span-2">
+                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2"><i class="fab fa-whatsapp text-green-600"></i> WhatsApp (Contáctanos)</h3>
+                    <p class="text-xs text-slate-500 font-medium mb-4">El número al que los clientes escribirán para contactarte o cancelar pedidos.</p>
+                    <div class="flex gap-3">
+                        <input type="tel" id="whatsapp-number" value="${settings.whatsappNumber}" placeholder="52" class="flex-1 bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                        <button onclick="saveWhatsAppNumber()" class="bg-[#4A5B6E] hover:bg-[#2D3B4A] text-white font-bold px-6 py-3 rounded-2xl text-xs uppercase tracking-widest transition-colors shadow-md">Guardar</button>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm md:col-span-2">
+                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2"><i class="fas fa-university text-blue-600"></i> Cuenta Bancaria para Clientes</h3>
+                    <p class="text-xs text-slate-500 font-medium mb-4">Este número será el que los clientes copien desde la pantalla principal al presionar el botón.</p>
+                    <div class="flex gap-3">
+                        <input type="text" id="bank-account" value="${settings.bankAccount}" placeholder="1234 5678 9012 5555" class="flex-1 bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                        <button onclick="saveBankAccount()" class="bg-[#4A5B6E] hover:bg-[#2D3B4A] text-white font-bold px-6 py-3 rounded-2xl text-xs uppercase tracking-widest transition-colors shadow-md">Guardar</button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderAdminFinanceTab() {
+            const orders = state.orders.filter(a => a.status === 'COMPLETED');
+            const totalInvested = orders.reduce((sum, a) => sum + (Number(a.costRefactions) || 0), 0);
+            const totalCharged = orders.reduce((sum, a) => sum + (Number(a.totalCharge) || 0), 0);
+            const netProfit = totalCharged - totalInvested;
+
+            const total = totalInvested + totalCharged || 1;
+            const investedPercent = (totalInvested / total) * 100;
+
+            const recentCompleted = [...orders].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6);
+
+            return `
+            <div class="space-y-8 animate-fade-in">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-700">
+                            <i class="fas fa-hand-holding-usd text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Invertido</div>
+                            <div class="text-2xl font-black text-slate-800">$${totalInvested.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-700">
+                            <i class="fas fa-dollar-sign text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Cobrado</div>
+                            <div class="text-2xl font-black text-slate-800">$${totalCharged.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-green-700">
+                            <i class="fas fa-chart-line text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ganancia Neta Total</div>
+                            <div class="text-2xl font-black text-green-700">$${netProfit.toFixed(2)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm">
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2"><i class="fas fa-chart-pie text-[#4A5B6E]"></i> Proporción Global</h3>
+                        <div class="flex justify-center">
+                            <div class="w-48 h-48 rounded-full" style="background: conic-gradient(#f97316 0% ${investedPercent}%, #22c55e ${investedPercent}% 100%);"></div>
+                        </div>
+                        <div class="flex justify-center gap-6 mt-6 text-xs font-bold">
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-green-500"></span> Ganancia Neta</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-500"></span> Inversión (Costo)</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-[2rem] p-6 shadow-sm">
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2"><i class="fas fa-history text-[#4A5B6E]"></i> Historial de Pedidos Completados</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            ${recentCompleted.map(order => `
+                                <div class="bg-[#F4F7FC] border border-slate-200 rounded-2xl p-4 flex flex-col gap-3">
+                                    <div class="w-full h-24 bg-white rounded-xl border border-slate-200 flex items-center justify-center p-2">
+                                        <img src="${order.perfume?.images?.[0] || ''}" alt="${order.perfume?.model}" class="max-w-full max-h-full object-contain">
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold text-slate-800">${order.perfume?.brand} ${order.perfume?.model}</div>
+                                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">📅 ${formatDateShort(order.date)}</div>
+                                        <div class="text-xs text-slate-500 font-medium">Cliente: ${order.customerName}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                            ${recentCompleted.length === 0 ? '<p class="text-xs text-slate-400 text-center py-4 col-span-full">No hay pedidos completados aún.</p>' : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderFooter() {
+            return `
+            <footer class="bg-slate-900 text-slate-400 py-12 relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-[#4A5B6E]/20 via-transparent to-transparent"></div>
+                <div class="max-w-7xl mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-3 opacity-80">
+                        <i class="fas fa-spray-can text-[#A0B4C8] text-xl"></i>
+                        <span class="text-xl font-bold tracking-tight text-white uppercase">ESENCIA<span class="text-[#A0B4C8]">·</span></span>
+                    </div>
+                    <div class="text-xs font-medium uppercase tracking-widest text-slate-500">&copy; ${new Date().getFullYear()} Perfumes Árabes & De Marca</div>
+                </div>
+            </footer>`;
+        }
+
+        function renderToast() {
+            const { toast } = state;
+            if (!toast) return '';
+            const isError = toast.type === 'error';
+            const isInfo = toast.type === 'info';
+            let classes = 'fixed bottom-6 right-6 z-[300] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-xl border text-sm font-medium transition-all animate-fade-in ';
+            if (isError) classes += 'bg-red-950/90 text-red-200 border-red-800';
+            else if (isInfo) classes += 'bg-[#F4F7FC] text-slate-800 border-slate-300 shadow-[0_8px_30px_rgb(0,0,0,0.12)]';
+            else classes += 'bg-gradient-to-r from-[#4A5B6E] to-[#2D3B4A] text-slate-100 border-[#4A5B6E] shadow-[0_8px_30px_rgb(0,0,0,0.12)]';
+            const icon = isError ? '<i class="fas fa-exclamation-circle text-red-400"></i>' : isInfo ? '<i class="fas fa-info-circle text-[#4A5B6E]"></i>' : '<i class="fas fa-check-circle text-[#A0B4C8]"></i>';
+            return `
+            <div class="${classes}" id="toast-container">
+                ${icon}
+                <span>${toast.message}</span>
+                <button onclick="dismissToast()" class="ml-3 opacity-70 hover:opacity-100 transition-opacity"><i class="fas fa-times"></i></button>
+            </div>`;
+        }
+
+        function renderConfirmationModal() {
+            const { confirmConfig } = state;
+            if (!confirmConfig || !confirmConfig.isOpen) return '';
+            return `
+            <div class="fixed inset-0 modal-overlay flex items-center justify-center z-[250] p-4">
+                <div class="bg-[#F4F7FC] border border-slate-200 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl relative text-slate-800 space-y-5 animate-scale-up">
+                    <button onclick="closeConfirmModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 transition-colors"><i class="fas fa-times"></i></button>
+                    <div class="w-12 h-12 rounded-2xl bg-[#E8EEF5] border border-[#B0C4D9] flex items-center justify-center text-[#4A5B6E] shadow-sm">
+                        <i class="fas fa-exclamation-circle text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold tracking-tight text-slate-800 mb-1">${confirmConfig.title}</h3>
+                        <p class="text-sm text-slate-500 font-normal leading-relaxed">${confirmConfig.message}</p>
+                    </div>
+                    <div class="flex items-center justify-end gap-3 pt-2">
+                        <button onclick="closeConfirmModal()" class="px-5 py-2.5 rounded-2xl text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 transition-all shadow-sm uppercase tracking-wider">Cancelar</button>
+                        <button onclick="confirmAction()" class="px-5 py-2.5 rounded-2xl text-xs font-semibold bg-gradient-to-r from-[#4A5B6E] to-[#2D3B4A] hover:from-[#3D4C5C] hover:to-[#1F2A35] text-white transition-all shadow-[0_4px_14px_0_rgba(74,91,110,0.25)] hover:shadow-[0_6px_20px_rgba(74,91,110,0.23)] hover:-translate-y-0.5 uppercase tracking-wider">Confirmar</button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderHeaderModal() {
+            const { searchPhone, foundOrders } = state;
+            return `
+            <div class="fixed inset-0 modal-overlay flex items-center justify-center z-[200] p-4">
+                <div class="bg-[#F4F7FC] border border-slate-200 rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl relative text-slate-800 space-y-6">
+                    <button onclick="closeHeaderModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 transition-colors"><i class="fas fa-times"></i></button>
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8EEF5] border border-[#B0C4D9]/50 text-[#2D3B4A] text-xs font-semibold uppercase tracking-wider mb-2">
+                            <i class="fas fa-sparkles text-[#4A5B6E]"></i> Atención al Cliente
+                        </div>
+                        <h3 class="text-xl font-bold tracking-tight text-slate-800">Consultar o Cancelar Pedido</h3>
+                        <p class="text-xs text-slate-500 font-normal mt-1">Ingresa el teléfono registrado para buscar tus pedidos activos.</p>
+                    </div>
+                    <form onsubmit="searchOrders(event)" class="space-y-3">
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Teléfono de Registro</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="header-search-phone" placeholder="Ej. 2202835590" value="${searchPhone}" class="flex-1 bg-white border border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20 font-medium text-slate-800 transition-all shadow-inner">
+                            <button type="submit" class="bg-gradient-to-r from-[#4A5B6E] to-[#2D3B4A] hover:from-[#3D4C5C] hover:to-[#1F2A35] text-white font-semibold px-5 py-2.5 rounded-2xl text-xs uppercase tracking-wider transition-all flex items-center gap-2 shrink-0 shadow-[0_4px_14px_0_rgba(74,91,110,0.25)] hover:shadow-[0_6px_20px_rgba(74,91,110,0.23)] hover:-translate-y-0.5"><i class="fas fa-search"></i> Buscar</button>
+                        </div>
+                    </form>
+                    ${foundOrders !== null ? `
+                        <div class="space-y-3 pt-2">
+                            <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500">Resultados (${foundOrders.length})</h4>
+                            ${foundOrders.length === 0 ? `
+                                <div class="p-4 rounded-2xl bg-white border border-slate-200 text-xs text-slate-500 text-center font-medium shadow-sm">No encontramos pedidos agendados con este número.</div>
+                            ` : `
+                                <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                                    ${foundOrders.map(a => `
+                                        <div class="p-4 rounded-2xl bg-white border border-slate-200 flex justify-between items-center gap-3 shadow-sm hover:border-[#4A5B6E]/30 transition-colors">
+                                            <div>
+                                                <div class="font-bold text-sm text-slate-800">${a.perfume?.model || 'Desconocido'}</div>
+                                                <div class="text-xs text-slate-500 mt-0.5">📅 ${formatDate(a.date)} a las ${formatTime(a.time)}</div>
+                                            </div>
+                                            <button onclick="cancelOrderFromModal('${a.id}')" class="px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 text-xs font-bold uppercase tracking-wider transition-colors shrink-0">Cancelar</button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `}
+                        </div>
+                    ` : ''}
+                    <div class="pt-4 border-t border-slate-200">
+                        <button onclick="openWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3.5 rounded-2xl transition-all flex items-center justify-center gap-2 uppercase tracking-wider text-xs shadow-[0_4px_14px_0_rgba(37,211,102,0.3)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.4)] hover:-translate-y-0.5"><i class="fab fa-whatsapp"></i> Contactar por WhatsApp</button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderEditPerfumeModal() {
+            const perfume = state.editingPerfume;
+            if (!perfume) return '';
+            const currentAccent = perfume.color || '#4A5B6E';
+            
+            return `
+            <div class="fixed inset-0 modal-overlay flex items-center justify-center z-[250] p-4">
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl relative text-slate-800 space-y-6 max-h-[90vh] overflow-y-auto">
+                    <button onclick="closeEditPerfumeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 transition-colors"><i class="fas fa-times"></i></button>
+                    <h3 class="text-xl font-bold tracking-tight text-slate-800">Editar Perfume</h3>
+                    <form onsubmit="saveEditedPerfume(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Nombre del Modelo</label>
+                            <input type="text" id="edit-perfume-model" value="${perfume.model}" required class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Precio (MXN)</label>
+                                <input type="number" id="edit-perfume-price" value="${perfume.price}" required class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Descuento (%)</label>
+                                <input type="number" id="edit-perfume-discount" value="${perfume.discount || 0}" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Rating</label>
+                                <input type="number" id="edit-perfume-rating" value="${perfume.rating}" step="0.1" min="1" max="5" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Reseñas</label>
+                                <input type="number" id="edit-perfume-reviews" value="${perfume.reviews}" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Tipo</label>
+                                <select id="edit-perfume-type" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                                    <option value="Árabe" ${perfume.type === 'Árabe' ? 'selected' : ''}>Árabe</option>
+                                    <option value="De Marca" ${perfume.type === 'De Marca' ? 'selected' : ''}>De Marca</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Género</label>
+                                <select id="edit-perfume-gender" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                                    <option value="Masculino" ${perfume.gender === 'Masculino' ? 'selected' : ''}>Masculino</option>
+                                    <option value="Femenino" ${perfume.gender === 'Femenino' ? 'selected' : ''}>Femenino</option>
+                                    <option value="Unisex" ${perfume.gender === 'Unisex' ? 'selected' : ''}>Unisex</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Tipo de Fragancia</label>
+                            <select id="edit-perfume-fragrance" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                                ${FRAGRANCE_TYPES.filter(f => f !== 'TODOS').map(f => `<option value="${f}" ${perfume.fragranceType === f ? 'selected' : ''}>${f}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Notas Olfativas</label>
+                            <input type="text" id="edit-perfume-notes" value="${perfume.notes}" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Descripción</label>
+                            <textarea id="edit-perfume-description" rows="2" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">${perfume.description}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">URLs de Imágenes (separadas por coma)</label>
+                            <input type="text" id="edit-perfume-images" value="${perfume.images.join(', ')}" class="w-full bg-[#F4F7FC] border border-slate-200 rounded-2xl p-3 text-sm font-medium focus:outline-none focus:border-[#4A5B6E] focus:ring-1 focus:ring-[#4A5B6E]/20">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Color de Acento</label>
+                            <div class="flex items-center gap-3">
+                                <input type="color" id="edit-perfume-color-picker" value="${currentAccent}" class="w-14 h-10 rounded-xl border border-slate-200 cursor-pointer p-0.5 bg-white" onchange="updatePerfumeAccentColor(this.value)">
+                                <span class="text-xs font-bold text-slate-600" id="color-hex-display">${currentAccent}</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                            <button type="button" onclick="closeEditPerfumeModal()" class="px-5 py-2.5 rounded-2xl text-xs font-bold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 transition-all uppercase tracking-wider">Cancelar</button>
+                            <button type="submit" class="px-5 py-2.5 rounded-2xl text-xs font-bold bg-[#4A5B6E] hover:bg-[#2D3B4A] text-white transition-all uppercase tracking-wider shadow-md">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>`;
+        }
+
+        // ---------- UTILIDADES Y MANEJADORES DE EVENTOS ----------
+        function getStatusBadge(status) {
+            switch (status) {
+                case 'PENDING': return '<span class="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-lg text-[10px] font-black uppercase tracking-widest">Pendiente</span>';
+                case 'COMPLETED': return '<span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-lg text-[10px] font-black uppercase tracking-widest">Completado</span>';
+                case 'CANCELLED': return '<span class="px-2.5 py-1 bg-red-100 text-red-800 rounded-lg text-[10px] font-black uppercase tracking-widest">Cancelado</span>';
+                default: return '';
+            }
+        }
+
+        window.setView = (view) => {
+            state.currentView = view;
+            if (view === 'catalog') state.selectedPerfumeForBooking = null;
+            render();
+        };
+
+        window.toggleBrandFilter = (brand) => {
+            state.catalogFilters.activeBrand = state.catalogFilters.activeBrand === brand ? 'TODOS' : brand;
+            render();
+        };
+
+        window.toggleTypeFilter = (type) => {
+            state.catalogFilters.activeType = state.catalogFilters.activeType === type ? 'TODOS' : type;
+            render();
+        };
+
+        window.toggleGenderFilter = (gender) => {
+            state.catalogFilters.activeGender = state.catalogFilters.activeGender === gender ? 'TODOS' : gender;
+            render();
+        };
+
+        window.toggleFragranceFilter = (fragrance) => {
+            state.catalogFilters.activeFragrance = state.catalogFilters.activeFragrance === fragrance ? 'TODOS' : fragrance;
+            render();
+        };
+
+        window.toggleDiscountFilter = () => {
+            state.catalogFilters.discountOnly = !state.catalogFilters.discountOnly;
+            render();
+        };
+
+        window.updateCatalogSearch = (val) => {
+            state.catalogFilters.searchQuery = val;
+            render();
+            const input = document.getElementById('catalog-search');
+            if (input) { input.focus(); const len = input.value.length; input.setSelectionRange(len, len); }
+        };
+
+        window.clearCatalogSearch = () => {
+            state.catalogFilters.searchQuery = '';
+            render();
+        };
+
+        window.selectPerfume = (id) => {
+            const perfume = state.perfumes.find(m => m.id === id);
+            if (perfume) {
+                state.selectedPerfumeForBooking = perfume;
+                state.currentView = 'detail';
+                state.carouselIndex[id] = 0;
+                render();
+            }
+        };
+
+        window.nextImage = (perfumeId, total) => {
+            const current = state.carouselIndex[perfumeId] || 0;
+            state.carouselIndex[perfumeId] = (current + 1) % total;
+            render();
+        };
+
+        window.prevImage = (perfumeId, total) => {
+            const current = state.carouselIndex[perfumeId] || 0;
+            state.carouselIndex[perfumeId] = (current - 1 + total) % total;
+            render();
+        };
+
+        window.setImage = (perfumeId, index) => {
+            state.carouselIndex[perfumeId] = index;
+            render();
+        };
+
+        window.startPurchase = (id) => {
+            const perfume = state.perfumes.find(m => m.id === id);
+            if (perfume) {
+                state.selectedPerfumeForBooking = perfume;
+                state.currentView = 'booking';
+                render();
+            }
+        };
+
+        window.copyBankAccount = () => {
+            const account = state.settings.bankAccount || 'BBVA 0123456789 (Esencia Perfumes)';
+            navigator.clipboard.writeText(account).then(() => {
+                const el = document.getElementById('copy-bank-text');
+                if (el) el.innerText = '¡Cuenta Copiada!';
+                showToast('¡Número de cuenta copiado al portapapeles!', 'success');
+                setTimeout(() => { if (el) el.innerText = 'Copiar Cuenta Bancaria'; }, 2500);
+            }).catch(() => showToast('No se pudo copiar', 'error'));
+        };
+
+        function showFieldError(fieldId, message) {
+            const input = document.getElementById(fieldId);
+            const errorEl = document.getElementById('error-' + fieldId);
+            if (input) input.classList.add('error');
+            if (errorEl) { if (message) errorEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message; errorEl.classList.remove('hidden'); }
+        }
+
+        function hideFieldError(fieldId) {
+            const input = document.getElementById(fieldId);
+            const errorEl = document.getElementById('error-' + fieldId);
+            if (input) input.classList.remove('error');
+            if (errorEl) errorEl.classList.add('hidden');
+        }
+
+        window.handleBookingSubmit = (e) => {
+            e.preventDefault();
+
+            ['booking-name', 'booking-phone', 'booking-details'].forEach(id => hideFieldError(id));
+
+            const name = document.getElementById('booking-name').value.trim();
+            const phone = document.getElementById('booking-phone').value.trim();
+            const address = document.getElementById('booking-details').value.trim();
+            const notes = document.getElementById('booking-notes').value.trim();
+            const paymentMethod = document.getElementById('booking-payment').value;
+
+            let hasError = false;
+            let firstErrorField = null;
+
+            if (!name) { showFieldError('booking-name', 'El nombre es obligatorio'); if (!firstErrorField) firstErrorField = 'booking-name'; hasError = true; }
+            if (!phone || phone.length < 10) { showFieldError('booking-phone', 'Ingresa un teléfono de 10 dígitos'); if (!firstErrorField) firstErrorField = 'booking-phone'; hasError = true; }
+            if (!address) { showFieldError('booking-details', 'Ingresa tu dirección de envío'); if (!firstErrorField) firstErrorField = 'booking-details'; hasError = true; }
+
+            if (hasError) {
+                showToast('Por favor corrige los campos marcados en rojo', 'error');
+                if (firstErrorField) { const el = document.getElementById(firstErrorField); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.focus(); } }
+                return;
+            }
+
+            const perfume = state.selectedPerfumeForBooking;
+            const finalPrice = getDiscountedPrice(perfume.price, perfume.discount);
+
+            const newOrder = {
+                id: Date.now().toString(),
+                perfume: perfume,
+                customerName: name,
+                customerPhone: phone,
+                address: address,
+                notes: notes,
+                paymentMethod: paymentMethod,
+                date: new Date().toISOString().split('T')[0],
+                time: new Date().toTimeString().substring(0, 5),
+                status: 'PENDING',
+                costRefactions: 0,
+                totalCharge: finalPrice,
+                mechanicNotes: ''
+            };
+
+            state.orders.push(newOrder);
+            showToast('¡Compra realizada exitosamente! Revisa el panel admin.', 'success');
+            setView('catalog');
+        };
+
+        window.setAdminTab = (tab) => {
+            state.adminTab = tab;
+            state.selectedOrder = null;
+            render();
+        };
+
+        window.deleteOrder = (id) => {
+            state.confirmConfig = {
+                isOpen: true,
+                title: 'Eliminar Pedido',
+                message: '¿Estás seguro de eliminar este pedido permanentemente?',
+                onConfirm: () => {
+                    state.orders = state.orders.filter(a => a.id !== id);
+                    showToast('Pedido eliminado', 'info');
+                    render();
+                }
+            };
+            render();
+        };
+
+        window.openOrderDetail = (id) => {
+            const order = state.orders.find(a => a.id === id);
+            if (order) { state.selectedOrder = order; render(); }
+        };
+
+        window.closeOrderDetail = () => {
+            state.selectedOrder = null;
+            render();
+        };
+
+        window.updateLiquidation = (id) => {
+            const costInput = document.getElementById('detail-cost-refactions');
+            const chargeInput = document.getElementById('detail-total-charge');
+            if (!costInput || !chargeInput) return;
+
+            const costRef = Number(costInput.value) || 0;
+            const totalCharge = Number(chargeInput.value) || 0;
+
+            state.orders = state.orders.map(a => a.id === id ? { ...a, costRefactions: costRef, totalCharge: totalCharge } : a);
+            if (state.selectedOrder && state.selectedOrder.id === id) {
+                state.selectedOrder.costRefactions = costRef;
+                state.selectedOrder.totalCharge = totalCharge;
+            }
+
+            const netEl = document.getElementById('detail-net-profit');
+            if (netEl) netEl.textContent = '$' + (totalCharge - costRef).toFixed(2);
+        };
+
+        window.saveMechanicNotes = (id) => {
+            const notesEl = document.getElementById('detail-mechanic-notes');
+            if (!notesEl) return;
+            const notes = notesEl.value.trim();
+
+            state.orders = state.orders.map(a => a.id === id ? { ...a, mechanicNotes: notes } : a);
+            if (state.selectedOrder && state.selectedOrder.id === id) {
+                state.selectedOrder.mechanicNotes = notes;
+            }
+            showToast('Notas guardadas', 'success');
+        };
+
+        window.setOrderStatusFromDetail = (id, newStatus) => {
+            state.orders = state.orders.map(a => a.id === id ? { ...a, status: newStatus } : a);
+            if (state.selectedOrder && state.selectedOrder.id === id) {
+                state.selectedOrder.status = newStatus;
+            }
+            showToast(`Pedido marcado como ${newStatus === 'COMPLETED' ? 'Completado' : 'Cancelado'}`, 'info');
+            render();
+        };
+
+        window.deleteOrderFromDetail = (id) => {
+            state.confirmConfig = {
+                isOpen: true,
+                title: 'Eliminar Pedido',
+                message: '¿Estás seguro de eliminar este pedido permanentemente?',
+                onConfirm: () => {
+                    state.orders = state.orders.filter(a => a.id !== id);
+                    state.selectedOrder = null;
+                    showToast('Pedido eliminado', 'info');
+                    render();
+                }
+            };
+            render();
+        };
+
+        window.addNewPerfume = (e) => {
+            e.preventDefault();
+            const brand = document.getElementById('new-perfume-brand').value;
+            const model = document.getElementById('new-perfume-model').value.trim();
+            const type = document.getElementById('new-perfume-type').value;
+            const gender = document.getElementById('new-perfume-gender').value;
+            const fragranceType = document.getElementById('new-perfume-fragrance').value;
+            const rating = document.getElementById('new-perfume-rating').value || 4.5;
+            const price = document.getElementById('new-perfume-price').value;
+            const discount = document.getElementById('new-perfume-discount').value || 0;
+            const notes = document.getElementById('new-perfume-notes').value.trim();
+            const description = document.getElementById('new-perfume-description').value.trim();
+            const imagesInput = document.getElementById('new-perfume-images').value.trim();
+
+            if (!brand || !model || !price) { showToast('Completa marca, modelo y precio', 'error'); return; }
+
+            const images = imagesInput ? imagesInput.split(',').map(s => s.trim()) : ['https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80'];
+
+            const newPerfume = {
+                id: Date.now(),
+                brand: brand.toUpperCase(),
+                model: model.toUpperCase(),
+                type: type,
+                gender: gender,
+                fragranceType: fragranceType,
+                price: Number(price),
+                discount: Number(discount),
+                rating: Number(rating),
+                reviews: 0,
+                description: description || 'Una fragancia excepcional.',
+                notes: notes || 'Notas por definir',
+                images: images,
+                color: '#4A5B6E'
+            };
+            state.perfumes.push(newPerfume);
+            showToast('Perfume agregado al catálogo', 'success');
+            render();
+        };
+
+        window.confirmDeletePerfume = (id) => {
+            state.confirmConfig = {
+                isOpen: true,
+                title: 'Eliminar Perfume',
+                message: '¿Estás seguro de eliminar este perfume del catálogo? Esta acción no se puede deshacer.',
+                onConfirm: () => {
+                    state.perfumes = state.perfumes.filter(m => m.id !== id);
+                    showToast('Perfume eliminado exitosamente', 'info');
+                    render();
+                }
+            };
+            render();
+        };
+
+        window.closeConfirmModal = () => { state.confirmConfig = { ...state.confirmConfig, isOpen: false }; render(); };
+        window.confirmAction = () => { if (state.confirmConfig && state.confirmConfig.onConfirm) state.confirmConfig.onConfirm(); closeConfirmModal(); };
+
+        window.updateWorkHour = (field, value) => { state.settings.workHours[field] = value; };
+        window.saveWorkHours = () => {
+            const start = document.getElementById('work-start').value;
+            const end = document.getElementById('work-end').value;
+            state.settings.workHours = { start, end };
+            showToast('Horarios de atención guardados', 'success');
+            render();
+        };
+
+        window.addBlockedDate = (e) => {
+            e.preventDefault();
+            const dateVal = document.getElementById('new-blocked-date').value;
+            if (!dateVal) return;
+            if (state.settings.blockedDays.some(d => d.date === dateVal)) { showToast('Esta fecha ya está bloqueada', 'error'); return; }
+            state.settings.blockedDays.push({ date: dateVal });
+            showToast('Fecha bloqueada agregada', 'success');
+            render();
+        };
+
+        window.removeBlockedDate = (date) => { state.settings.blockedDays = state.settings.blockedDays.filter(d => d.date !== date); render(); };
+
+        window.saveWhatsAppNumber = () => {
+            const num = document.getElementById('whatsapp-number').value.trim();
+            if (!num) { showToast('Ingresa un número válido', 'error'); return; }
+            state.settings.whatsappNumber = num;
+            showToast('Número de WhatsApp guardado', 'success');
+            render();
+        };
+
+        window.saveBankAccount = () => {
+            const acc = document.getElementById('bank-account').value.trim();
+            if (!acc) { showToast('Ingresa una cuenta válida', 'error'); return; }
+            state.settings.bankAccount = acc;
+            showToast('Cuenta bancaria guardada', 'success');
+            render();
+        };
+
+        window.setCalendarView = (mode) => { state.calendarViewMode = mode; state.selectedOrder = null; render(); };
+
+        window.changeCalendarDate = (delta) => {
+            const d = new Date(state.calendarDate + 'T12:00:00');
+            if (state.calendarViewMode === 'day') d.setDate(d.getDate() + delta);
+            else d.setDate(d.getDate() + (delta * 7));
+            state.calendarDate = d.toISOString().split('T')[0];
+            state.selectedOrder = null;
+            render();
+        };
+
+        window.openEditPerfumeModal = (id) => {
+            const perfume = state.perfumes.find(m => m.id === id);
+            if (perfume) { state.editingPerfume = JSON.parse(JSON.stringify(perfume)); state.isEditModalOpen = true; render(); }
+        };
+
+        window.closeEditPerfumeModal = () => { state.isEditModalOpen = false; state.editingPerfume = null; render(); };
+
+        window.updatePerfumeAccentColor = (colorHex) => {
+            if (state.editingPerfume) {
+                state.editingPerfume.color = colorHex;
+                document.getElementById('color-hex-display').textContent = colorHex;
+                const previewDiv = document.querySelector('#edit-perfume-color-picker');
+                if (previewDiv) previewDiv.value = colorHex;
+            }
+        };
+
+        window.saveEditedPerfume = (e) => {
+            e.preventDefault();
+            const model = document.getElementById('edit-perfume-model').value.trim();
+            const price = document.getElementById('edit-perfume-price').value;
+            const discount = document.getElementById('edit-perfume-discount').value || 0;
+            const rating = document.getElementById('edit-perfume-rating').value;
+            const reviews = document.getElementById('edit-perfume-reviews').value;
+            const type = document.getElementById('edit-perfume-type').value;
+            const gender = document.getElementById('edit-perfume-gender').value;
+            const fragranceType = document.getElementById('edit-perfume-fragrance').value;
+            const notes = document.getElementById('edit-perfume-notes').value.trim();
+            const description = document.getElementById('edit-perfume-description').value.trim();
+            const imagesInput = document.getElementById('edit-perfume-images').value.trim();
+            const color = document.getElementById('edit-perfume-color-picker').value;
+
+            if (!model || !price) { showToast('Completa modelo y precio', 'error'); return; }
+
+            const images = imagesInput ? imagesInput.split(',').map(s => s.trim()) : state.editingPerfume.images;
+
+            const perfumeIndex = state.perfumes.findIndex(m => m.id === state.editingPerfume.id);
+            if (perfumeIndex !== -1) {
+                state.perfumes[perfumeIndex] = {
+                    ...state.perfumes[perfumeIndex],
+                    model: model,
+                    price: Number(price),
+                    discount: Number(discount),
+                    rating: Number(rating),
+                    reviews: Number(reviews),
+                    type: type,
+                    gender: gender,
+                    fragranceType: fragranceType,
+                    notes: notes,
+                    description: description,
+                    images: images,
+                    color: color
+                };
+                showToast('Perfume actualizado correctamente', 'success');
+            }
+            closeEditPerfumeModal();
+        };
+
+        window.handleLogin = (e) => {
+            e.preventDefault();
+            const user = document.getElementById('login-username').value;
+            const pass = document.getElementById('login-password').value;
+            if (user === 'admin' && pass === 'esencia2025') {
+                state.isAuthenticated = true;
+                showToast('¡Sesión iniciada correctamente!', 'success');
+                setView('admin');
+            } else {
+                showToast('Credenciales incorrectas (Usa admin / esencia2025)', 'error');
+            }
+        };
+
+        window.fillDemoCredentials = () => {
+            document.getElementById('login-username').value = 'admin';
+            document.getElementById('login-password').value = 'esencia2025';
+            showToast('Credenciales de prueba cargadas', 'info');
+        };
+
+        window.togglePasswordVisibility = () => {
+            const input = document.getElementById('login-password');
+            const icon = document.getElementById('toggle-password-icon');
+            if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; }
+            else { input.type = 'password'; icon.className = 'fas fa-eye'; }
+        };
+
+        window.logout = () => { state.isAuthenticated = false; state.currentView = 'catalog'; showToast('Sesión cerrada', 'info'); render(); };
+
+        window.openHeaderModal = () => { state.showHeaderModal = true; state.foundOrders = null; state.searchPhone = ''; render(); };
+        window.closeHeaderModal = () => { state.showHeaderModal = false; render(); };
+
+        window.searchOrders = (e) => {
+            e.preventDefault();
+            const phone = document.getElementById('header-search-phone').value.trim();
+            if (!phone || phone.length < 5) { showToast('Ingresa un número de teléfono válido', 'error'); return; }
+            state.searchPhone = phone;
+            const filtered = state.orders.filter(a => a.customerPhone.includes(phone) && a.status === 'PENDING');
+            state.foundOrders = filtered;
+            render();
+        };
+
+        window.cancelOrderFromModal = (id) => {
+            state.orders = state.orders.map(a => a.id === id ? { ...a, status: 'CANCELLED' } : a);
+            showToast('Pedido cancelado con éxito', 'info');
+            if (state.foundOrders) state.foundOrders = state.foundOrders.filter(a => a.id !== id);
+            render();
+        };
+
+        window.openWhatsApp = () => {
+            const num = state.settings.whatsappNumber || '522202835590';
+            const text = encodeURIComponent('Hola ESENCIA, requiero atención con mi pedido de perfume.');
+            window.open(`https://wa.me/${num}?text=${text}`, '_blank');
+        };
+
+        window.showToast = (message, type = 'info') => {
+            state.toast = { message, type };
+            render();
+            setTimeout(() => {
+                if (state.toast && state.toast.message === message) { state.toast = null; render(); }
+            }, 4000);
+        };
+
+        window.dismissToast = () => { state.toast = null; render(); };
+
+        function attachGlobalListeners() {}
+
+        // Renderizado inicial
+        render();
+        window.state = state;
+    </script>
+</body>
+</html>
